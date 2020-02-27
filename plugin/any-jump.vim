@@ -1,6 +1,4 @@
 " TODO:
-" - impl all rules from dumb-jump
-" - update README
 " - create doc
 "
 " TODO_THINK:
@@ -87,12 +85,13 @@ call s:set_plugin_global_option('any_jump_window_top_offset', 2)
 " ----------------------------------------------
 
 fu! s:CreateUi(internal_buffer) abort
-  let buf = nvim_create_buf(v:false, v:true)
+  let kw  = a:internal_buffer.keyword
+  let buf = bufadd('any-jump lookup ' . kw)
 
-  call nvim_buf_set_option(buf, 'filetype', 'any-jump')
-  call nvim_buf_set_option(buf, 'bufhidden', 'delete')
-  call nvim_buf_set_option(buf, 'buftype', 'nofile')
-  call nvim_buf_set_option(buf, 'modifiable', v:true)
+  call setbufvar(buf, '&filetype', 'any-jump')
+  call setbufvar(buf, '&bufhidden', 'delete')
+  call setbufvar(buf, '&buftype', 'nofile')
+  call setbufvar(buf, '&modifiable', 1)
 
   let height     = float2nr(&lines * g:any_jump_window_height_ratio)
   let width      = float2nr(&columns * g:any_jump_window_width_ratio)
